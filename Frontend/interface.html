@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <link rel="stylesheet" href="interface.css">
+</head>
+
+<body>
+    <div class="App">
+        <h1>Interface de chiffrement de message</h1>
+
+        <select id="methodSelect">
+            <option value="ceasar">Ceasar</option>
+            <option value="decalage">Décalage</option>
+            <option value="affine">Affine</option>
+            <option value="decalageSolution">Decalage Solution</option>
+            <option value="ceasarSolution">Ceasar Solution</option>
+        </select>
+
+        <div id="MethodContainer">
+            <div id="decalageMethod1" class="method">
+                <div class="input-group">
+                    <label>Message clair</label>
+                    <input type="text" placeholder="Message clair" />
+                </div>
+                <div class="input-group">
+                    <label>A gauche ?</label>
+                    <input type="checkbox" />
+                </div>
+            </div>
+            <div id="decalageSolutionMethod" class="method">
+                <div class="input-group">
+                    <label>Message clair</label>
+                    <input type="text" placeholder="Message clair" />
+                </div>
+                <div class="input-group">
+                    <label>Clé de décalage</label>
+                    <input type="number" placeholder="Clé de décalage" />
+                </div>
+                <div class="input-group">
+                    <label>Taille désirée du message crypté</label>
+                    <input type="number" placeholder="Taille" value={tailleDesiree} />
+                </div>
+            </div>
+            <div id="affineMethod" class="method">
+                <div class="input-group">
+                    <label>Message clair</label>
+                    <input type="text" placeholder="Message clair" id="messageToSend" />
+                </div>
+            </div>
+        </div>
+        <button>Envoyer</button>
+
+
+
+        <div>Message crypté :
+            <div id="messageCrypte"></div>
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"
+        integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+    <script>
+        $("#decalageSolutionMethod").hide();
+        $("#decalageMethod").hide();
+        $("#affineMethod").hide();
+        $("#methodSelect").change(function () {
+            var selectedMethod = $(this).val();
+            $(".method").hide();
+            $("#" + selectedMethod + "Method").show();
+        });
+
+        $("#messageToSend").change(function () {
+            var message = $("#messageToSend").val();
+            var gauche = $("input[type='checkbox']").is(":checked");
+            $.ajax({
+                url: "https://localhost:7018/crypter",
+                type: "GET",
+                data: {
+                    message: message,
+                    gauche: gauche,
+                },
+                success: function (data) {
+                    $("#messageCrypte").text(data.code);
+                },
+            });
+        });
+
+        $("button").click(function () {
+            var message = $("#messageToSend").val();
+            var cle = $("input[type='number']").val();
+            var taille = $("input[type='number']").val();
+            var gauche = $("input[type='checkbox']").is(":checked");
+            $.ajax({
+                // headers: {
+                //     "Access-Control-Allow-Origin": "*",
+                // },
+                url: "https://localhost:7018/crypter",
+                type: "GET",
+                data: {
+                    message: message,
+                    gauche: gauche,
+                },
+                success: function (data) {
+                    $("#messageCrypte").text(data.code);
+                },
+            });
+        });
+    </script>
+</body>
+
+</html>

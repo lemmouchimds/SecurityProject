@@ -1,0 +1,113 @@
+body {
+    margin: 0;
+    overflow: hidden;
+    background-image: url('wallpaper.jpg');
+    background-size: cover;
+    background-position: center;
+}
+
+body,
+.title,
+label,
+input[type="submit"] {
+    color: white;
+}
+
+.app {
+    display: flex;
+    flex-direction: column;
+    font-family: Cambria, Cochin, Georgia, Times, "Times New Roman", serif;
+    align-items: flex-start;
+    justify-content: center;
+    height: 100vh;
+    width: 80%;
+    margin: 0 auto;
+    text-align: center;
+    background-color: transparent;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1), 0 1px 3px rgba(46, 41, 41, 0.08);
+    padding: 50px;
+}
+
+.login-form {
+    background-color: transparent;
+    backdrop-filter: blur(20px);
+    padding: 2rem;
+    width: 30%;
+    height: 50%;
+    max-width: 400px;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    transition: all 1.5s ease-in-out;
+    transform: translateY(-100px);
+    opacity: 0;
+}
+
+.login-form.animation-enter {
+    transform: translateY(0);
+    opacity: 1;
+}
+
+.form {
+    background-color: transparent;
+}
+
+.input-container {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin: 20px;
+    backdrop-filter: blur(70px);
+    background-color: transparent;
+}
+
+.input-container input[type="text"],
+.input-container input[type="password"] {
+    height: 30px;
+    margin-bottom: 10px;
+}
+
+.input-container input[type="submit"] {
+    margin-top: 20px;
+}
+
+input[type="submit"] {
+    margin-top: 10px;
+    cursor: pointer;
+    font-size: 15px;
+    background: #01d28e;
+    border: 1px solid #01d28e;
+    color: #f3f1f1;
+    padding: 10px 20px;
+    transition: background 0.3s ease-in-out;
+}
+
+input[type="submit"]:hover {
+    background: #6cf0c2;
+}
+
+.button-container {
+    display: flex;
+    justify-content: center;
+    background-color: transparent;
+}
+
+.error {
+    color: red;
+    font-size: 12px;
+}
+
+.title {
+    font-size: 55px;
+    margin-bottom: 10px;
+    background-color: transparent;
+    color: #f3f1f1;
+    transition: all 0.5s ease-in-out;
+}
+
+.input-container {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin: 20px;
+    backdrop-filter: blur(70px);
+    background-color: transparent;
+}

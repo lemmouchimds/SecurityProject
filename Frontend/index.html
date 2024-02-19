@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <div class="app">
+        <div id="login-form" class="login-form">
+            <div class="title">Sign In</div>
+            <div class="form">
+                <form id="loginForm">
+                    <div class="input-container">
+                        <label>Username </label>
+                        <input type="text" name="uname" required />
+                    </div>
+                    <div class="input-container">
+                        <label>Password </label>
+                        <input type="password" name="pass" required />
+                    </div>
+                    <div class="button-container">
+                        <input type="submit" />
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"
+        integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+    <script>
+        window.onload = function () {
+            var loginForm = $("#login-form");
+            loginForm.addClass("animation-enter");
+
+            $("#loginForm").on("submit", function (event) {
+                event.preventDefault();
+                var username = $("input[name='uname']").val();
+                var password = $("input[name='pass']").val();
+                if (username === "admin" && password === "root") {
+                    window.location.href = "interface.html";
+                }
+                else {
+                    alert("Invalid username or password");
+                }
+            });
+        };
+        //   if (username === "admin" && password === "root") {
+        //     var xhr = new XMLHttpRequest();
+        //     xhr.onreadystatechange = function() {
+        //       if (xhr.readyState == 4 && xhr.status == 200) {
+        //         window.location.href = "interface.html";
+        //       }
+        //     };
+        //     xhr.open("GET", "", true);
+        //     xhr.send();
+        //   } else {
+        //     alert("Invalid username or password");
+        //   }
+        //      });
+        //   };
+    </script>
+</body>
+
+</html>
