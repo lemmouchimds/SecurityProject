@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Interface User B</title>
+    <link rel="stylesheet" href="interface.css">
+    <style>
+        .container {
+            margin-bottom: 20px;
+        }
+        
+        .parties-container {
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .partie1,.partie2, .message-container {
+            width: 28%;
+        }
+
+        .message-container {
+            border: 1px solid #ccc;
+            padding: 10px;
+            margin-top: 20px;
+            text-align: center;
+            background-color: rgba(255, 255, 255, 0.6);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1), 0 1px 3px rgba(46, 41, 41, 0.08);
+        }
+        
+        .partie1  , .partie2{
+            padding: 30px;
+            background-color: rgba(255, 255, 255, 0.6);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1), 0 1px 3px rgba(46, 41, 41, 0.08);
+        }
+
+        .synch-button {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+    </style>
+</head>
+<body>
+    <h1>Interface User A/B</h1>
+    <div class="parties-container">
+        <div class="partie1"> 
+            <div class="container">
+                <label for="encryption-type">Choix de l'algorithme:</label>
+                <select id="encryption-type">
+                    <option value="Miroir">Miroir</option>
+                    <option value="Decalage">Decalage</option>
+                    <option value="Affine">Affine</option>
+                    <option value="Caesar">Caesar</option>
+                </select>
+            </div>
+            <div class="container">
+                <label for="message-clair">Message clair :</label>
+                <input type="text" class="message-clair">
+            </div>
+            <div class="Miroir">
+
+            </div>
+            <div class="Decalage">
+                <label for="options">A gauche : </label>
+                <input type="checkbox" id="option1">
+            </div>
+            <div class="DecalageSolution">
+                <label for="options">A gauche : </label>
+                <input type="checkbox" id="option1">
+            </div>
+            <div class="Affine">
+                <label for="options">A : </label>
+                <input type="text" id="option1">
+                <label for="options">B : </label>
+                <input type="text" id="option1">
+            </div>
+
+            <div class="Caesar">
+                <label for="options">Decalage : </label>
+                <input type="text" id="option1">
+            </div>
+            <button class="send-button">Send</button>
+        </div>
+       
+        <div class="message-container">
+            <p id="chiffre">Lorem ipsum dolor sit amet consectetur adipisicing elit. Nihil veniam quos ipsum, exercitationem, quaerat accusantium odit provident eligendi neque iusto harum nemo et non voluptate odio nobis libero eum impedit!S</p>
+        </div>
+        
+        <div class="partie2"> 
+            <div class="container">
+                <label for="encryption-type">Choix de l'algorithme:</label>
+                <select id="encryption-type">
+                    <option value="Miroir">Miroir</option>
+                    <option value="Decalage">Decalage</option>
+                    <option value="Affine">Affine</option>
+                    <option value="Caesar">Caesar</option>
+                </select>
+            </div>
+            <div class="container">
+                <label for="message-clair">Message clair :</label>
+                <input type="text" class="message-clair">
+            </div>
+            <div class="container">
+                <label for="options">Options:</label>
+                <input type="checkbox" id="option1">
+                <label for="option1">cle</label>
+                <input type="checkbox" id="cle">
+                <label for="option2">taille</label>
+                <input type="checkbox" id="taille">
+                <label for="option3">Option 3</label>
+            </div>
+            <button class="send-button">Send</button>
+        </div>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"
+        integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+    <script src="script.js"></script>
+</body>
+</html>

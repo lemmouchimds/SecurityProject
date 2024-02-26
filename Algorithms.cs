@@ -1,14 +1,16 @@
-﻿namespace SecurityAPI
+﻿using System.Text;
+
+namespace SecurityAPI
 {
     public record Code(string code);
 
     public enum Algo
     {
-        decalage, 
-        ceasar, 
-        affine, 
+        decalage,
+        ceasar,
+        affine,
         decalageSolution,
-        
+
     }
 
     public class Algorithms
@@ -25,11 +27,11 @@
             {
                 case Algo.decalage:
                     bool key = bool.Parse(cles.First().ToString()!);
-                    string s = algorithms[algo] + (key? "1": "0");
+                    string s = algorithms[algo] + (key ? "1" : "0");
                     return s;
-                    
-                //case Algo.decalageSolution:
-                //    int key
+
+                    //case Algo.decalageSolution:
+                    //    int key
 
             }
 
@@ -38,7 +40,7 @@
 
 
         #region Chahinez
-        public static string Decaler(string message, bool versLaGauche)
+        public static string DecalerCrypter(string message, bool versLaGauche)
         {
             if (string.IsNullOrEmpty(message))
             {
@@ -72,52 +74,123 @@
 
             foreach (string mot in mots)
             {
-                string motDecale = Decaler(mot, versLaGauche); // Décale chaque mot
+                string motDecale = DecalerCrypter(mot, versLaGauche); // Décale chaque mot
                 phraseDecalee.Append(motDecale).Append(' '); // Ajoute le mot décalé à la phrase décalée
             }
 
             return phraseDecalee.ToString().Trim(); // Supprime l'espace final et retourne la phrase décalée
         }
 
-        public static string DecalerInverse(string message, bool versLaGauche)
+        public static string DecalerDecrypt(string message, bool versLaGauche)
         {
-            if (string.IsNullOrEmpty(message))
+            return DecalerPhrase(message, !versLaGauche);
+        }
+
+        static readonly int ALPHABET_SIZE = 26; // Taille de l'alphabet anglais
+
+        // Fonction de chiffrement affine
+        public static string AffineCrypt(string message, int a, int b)
+        {
+            StringBuilder encryptedMessage = new();
+
+            foreach (char character in message)
             {
-                return message;
+                if (char.IsLetter(character))
+                {
+                    int x = character - (char.IsUpper(character) ? 'A' : 'a');
+                    int y = (a * x + b) % ALPHABET_SIZE;
+                    if (y < 0) y += ALPHABET_SIZE; // Gestion des valeurs négatives
+                    encryptedMessage.Append((char)(y + (char.IsUpper(character) ? 'A' : 'a')));
+                }
+                else
+                {
+                    encryptedMessage.Append(character); // Ne pas chiffrer les caractères non alphabétiques
+                }
             }
 
-            if (versLaGauche)
+            return encryptedMessage.ToString();
+        }
+
+        // Fonction de déchiffrement affine
+        public static string AffineDecrypt(string message, int a, int b)
+        {
+            StringBuilder decryptedMessage = new();
+
+            // Calcul de l'inverse multiplicatif de a modulo ALPHABET_SIZE (si possible)
+            int aInverse = -1;
+            for (int i = 0; i < ALPHABET_SIZE; i++)
             {
-                // shift to the right
-                message = message[^1] + message[..^1];
+                if ((a * i) % ALPHABET_SIZE == 1)
+                {
+                    aInverse = i;
+                    break;
+                }
+            }
+
+            if (aInverse == -1)
+            {
+                Console.WriteLine("Impossible de déchiffrer. 'a' n'a pas d'inverse.");
+                return null;
+            }
+
+            foreach (char character in message)
+            {
+                if (char.IsLetter(character))
+                {
+                    int y = character - (char.IsUpper(character) ? 'A' : 'a');
+                    int x = (aInverse * (y - b)) % ALPHABET_SIZE;
+                    if (x < 0) x += ALPHABET_SIZE; // Gestion des valeurs négatives
+                    decryptedMessage.Append((char)(x + (char.IsUpper(character) ? 'A' : 'a')));
+                }
+                else
+                {
+                    decryptedMessage.Append(character); // Ne pas déchiffrer les caractères non alphabétiques
+                }
+            }
+
+            return decryptedMessage.ToString();
+        }
+
+        static bool ValiderParametres(int a, int b)
+        {
+            // Vérifier que a est différent de 1 et b est different de 0 because x*1+0=maderna walo
+            if (a == 1 && b == 0)
+            {
+                Console.WriteLine("Attention : lorsque 'a' vaut 1 et 'b' vaut 0, le chiffrement affine ne produit aucun chiffrement réel.");
+                return false;
+            }
+
+            // Vérifier que a est premier avec ALPHABET_SIZE
+            if (Pgcd(a, ALPHABET_SIZE) != 1)
+            {
+                Console.WriteLine("La valeur de 'a' n'est pas valide. 'a' doit être premier avec " + ALPHABET_SIZE + ".");
+                return false;
+            }
+
+            // Vérifier que b est un entier valide
+            if (b < 0 || b >= ALPHABET_SIZE)
+            {
+                Console.WriteLine("La valeur de 'b' n'est pas valide. 'b' doit être compris entre 0 et " + (ALPHABET_SIZE - 1) + ".");
+                return false;
+            }
+
+            return true;
+        }
+
+        static int Pgcd(int a, int b)
+        {
+            if (b == 0)
+            {
+                return a;
             }
             else
             {
-                // shift to the left
-                message = message.Substring(1) + message[0];
+                return Pgcd(b, a % b);
             }
-
-            return message; // Retourne le message décalé
         }
-
-        //public static void Main(string[] args)
-        //{
-        //    Console.Write("Entrez la phrase: ");
-        //    string phrase = Console.ReadLine();
-
-        //    Console.Write("Voulez-vous décaler vers la gauche (true) ou vers la droite (false) ? ");
-        //    bool versLaGauche = bool.Parse(Console.ReadLine());
-
-        //    string phraseDecalee = DecalerPhrase(phrase, versLaGauche);
-        //    Console.WriteLine("Phrase décalée: " + phraseDecalee);
-        //    string phraseDecryptee = DecalerPhrase(phraseDecalee, !versLaGauche);
-        //    Console.WriteLine("Phrase déchiffrée: " + phraseDecryptee);
-        //}
-
-
         static int tailleDesiree = 0;
 
-        public static string Crypter(string message, int cle, int tailleDesiree)
+        public static string DecalageSolutionCrypt(string message, int cle, int tailleDesiree)
         {
             System.Text.StringBuilder messageCrypte = new System.Text.StringBuilder();
             foreach (char caractere in message)
@@ -138,7 +211,7 @@
             return messageCrypte.ToString();
         }
 
-        public static string Decrypter(string messageCrypte, int cle)
+        public static string DecalageSolutionDecrypt(string messageCrypte, int cle)
         {
             System.Text.StringBuilder messageDecrypte = new System.Text.StringBuilder();
             foreach (char caractere in messageCrypte)
@@ -162,22 +235,111 @@
             return messageDecrypte.ToString();
         }
 
-        //public static void Main(string[] args)
-        //{
-        //    Console.Write("Entrez la phrase: ");
-        //    string messageClair = Console.ReadLine();
-        //    int cle = 3; // La clé de décalage (peut être ajustée selon les besoins)
-        //                 // La taille désirée du message crypté
-        //    Console.Write("Entrez la taille desiree: ");
-        //    tailleDesiree = int.Parse(Console.ReadLine());
-        //    // Cryptage
-        //    string messageCrypte = Crypter(messageClair, cle, tailleDesiree);
-        //    Console.WriteLine("Message crypté: " + messageCrypte);
+        static readonly int ASCII_SIZE = 256; // Taille de l'alphabet ASCII étendu
 
-        //    // Décryptage
-        //    string messageDecrypte = Decrypter(messageCrypte, cle);
-        //    Console.WriteLine("Message décrypté: " + messageDecrypte);
+        // Fonction de chiffrement affine
+        public static string AffineSolutionCrypt(string message, int a, int b)
+        {
+            System.Text.StringBuilder encryptedMessage = new System.Text.StringBuilder();
+
+            foreach (char character in message)
+            {
+                int x = character;
+                int y = (a * x + b) % ASCII_SIZE;
+                if (y < 0) y += ASCII_SIZE; // Gestion des valeurs négatives
+                encryptedMessage.Append((char)y);
+            }
+
+            return encryptedMessage.ToString();
+        }
+
+        // Fonction de déchiffrement affine
+        public static string AffineSolutionDecrypt(string message, int a, int b, int originalLength)
+        {
+            System.Text.StringBuilder decryptedMessage = new System.Text.StringBuilder();
+
+            // Calcul de l'inverse multiplicatif de a modulo ALPHABET_SIZE (si possible)
+            int aInverse = -1;
+            for (int i = 0; i < ASCII_SIZE; i++)
+            {
+                if ((a * i) % ASCII_SIZE == 1)
+                {
+                    aInverse = i;
+                    break;
+                }
+            }
+
+            if (aInverse == -1)
+            {
+                Console.WriteLine("Impossible de déchiffrer. 'a' n'a pas d'inverse.");
+                return null;
+            }
+
+            // Définir la longueur du message déchiffré sur celle du message chiffré
+            int decryptedLength = message.Length;
+
+            foreach (char character in message)
+            {
+                int y = character;
+                int x = (aInverse * (y - b)) % ASCII_SIZE;
+                if (x < 0) x += ASCII_SIZE; // Gestion des valeurs négatives
+                decryptedMessage.Append((char)x);
+            }
+
+            // Retirer les caractères supplémentaires du message déchiffré
+            return decryptedMessage.ToString().Substring(0, originalLength);
+        }
+
+        //public char[] CipherCode(int number)
+        //{
+        //    var charA = 'a';
+        //    var result = new char[ALPHABET_SIZE];
+
+        //    for (int i = 0; i < ALPHABET_SIZE; i++)
+        //    {
+        //        var code = (charA + number);
+        //        if (code > 'z')
+        //        {
+        //            code -= ALPHABET_SIZE;
+        //        }
+
+        //        result[i] = (char)code;
+        //    }
+
+        //    return result;
+
         //}
+
+        public static string CaesarEncrypt(string message, int shift)
+        {
+            char[] encryptedMessage = new char[message.Length];
+
+            for (int i = 0; i < message.Length; i++)
+            {
+                char character = message[i];
+                if (char.IsLetter(character))
+                {
+                    char baseChar = char.IsUpper(character) ? 'A' : 'a';
+                    char encryptedChar = (char)(((character - baseChar + shift) % 26) + baseChar);
+                    if (encryptedChar < baseChar)
+                    {
+                        encryptedChar += (char)26;
+                    }
+                    encryptedMessage[i] = encryptedChar;
+                }
+                else
+                {
+                    encryptedMessage[i] = character;
+                }
+            }
+
+            return new string(encryptedMessage);
+        }
+
+        public static string CaesarDecrypt(string encryptedMessage, int shift)
+        {
+            return CaesarEncrypt(encryptedMessage, 26 - shift);
+        }
 
         #endregion
 
