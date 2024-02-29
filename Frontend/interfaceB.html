@@ -45,8 +45,8 @@
         <div class="partie1"> 
             <div class="container">
                 <label for="encryption-type">Choix de l'algorithme:</label>
-                <select id="encryption-type">
-                    <option value="Miroir">Miroir</option>
+                <select class="encryption-type">
+                    <option value="Mirroir">Mirroir</option>
                     <option value="Decalage">Decalage</option>
                     <option value="Affine">Affine</option>
                     <option value="Caesar">Caesar</option>
@@ -56,28 +56,32 @@
                 <label for="message-clair">Message clair :</label>
                 <input type="text" class="message-clair">
             </div>
-            <div class="Miroir">
+            <div class="Mirroir">
 
             </div>
             <div class="Decalage">
-                <label for="options">A gauche : </label>
-                <input type="checkbox" id="option1">
+                <label for="options">Position : </label>
+                <select id="position">
+                    <option value="gauche">Gauche</option>
+                    <option value="droit">Droit</option>
+                </select>
             </div>
-            <div class="DecalageSolution">
-                <label for="options">A gauche : </label>
-                <input type="checkbox" id="option1">
-            </div>
+            <!-- <div class="DecalageSolution">
+                <label for="options">Cle : </label>
+                <input type="number" id="option1">
+            </div> -->
             <div class="Affine">
                 <label for="options">A : </label>
-                <input type="text" id="option1">
+                <input type="text" id="number1">
                 <label for="options">B : </label>
-                <input type="text" id="option1">
+                <input type="text" id="number2">
             </div>
 
             <div class="Caesar">
                 <label for="options">Decalage : </label>
-                <input type="text" id="option1">
+                <input type="number" id="shift">
             </div>
+            
             <button class="send-button">Send</button>
         </div>
        
@@ -88,27 +92,39 @@
         <div class="partie2"> 
             <div class="container">
                 <label for="encryption-type">Choix de l'algorithme:</label>
-                <select id="encryption-type">
-                    <option value="Miroir">Miroir</option>
-                    <option value="Decalage">Decalage</option>
-                    <option value="Affine">Affine</option>
-                    <option value="Caesar">Caesar</option>
+                <select class="encryption-type2">
+                    <option value="Mirroir2">Mirroir</option>
+                    <option value="Decalage2">Decalage</option>
+                    <option value="Affine2">Affine</option>
+                    <option value="Caesar2">Caesar</option>
                 </select>
             </div>
             <div class="container">
                 <label for="message-clair">Message clair :</label>
-                <input type="text" class="message-clair">
+                <input type="text" class="message-clair2">
             </div>
-            <div class="container">
-                <label for="options">Options:</label>
-                <input type="checkbox" id="option1">
-                <label for="option1">cle</label>
-                <input type="checkbox" id="cle">
-                <label for="option2">taille</label>
-                <input type="checkbox" id="taille">
-                <label for="option3">Option 3</label>
+            <div class="Mirroir">
+
             </div>
-            <button class="send-button">Send</button>
+            <div class="Decalage2">
+                <label for="options">Position : </label>
+                <select id="position2">
+                    <option value="gauche2">Gauche</option>
+                    <option value="droit2">Droit</option>
+                </select>
+            </div>
+            <div class="Affine2">
+                <label for="options">A : </label>
+                <input type="text" id="number21">
+                <label for="options">B : </label>
+                <input type="text" id="number22">
+            </div>
+
+            <div class="Caesar2">
+                <label for="options">Decalage : </label>
+                <input type="number" id="shift2">
+            </div>
+            <button class="send-button2">Send</button>
         </div>
     </div>
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"

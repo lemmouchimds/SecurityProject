@@ -151,7 +151,7 @@ namespace SecurityAPI
             return decryptedMessage.ToString();
         }
 
-        static bool ValiderParametres(int a, int b)
+        public static bool ValiderParametres(int a, int b)
         {
             // Vérifier que a est différent de 1 et b est different de 0 because x*1+0=maderna walo
             if (a == 1 && b == 0)

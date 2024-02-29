@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Recherche de mot de passe</title>
+</head>
+<body>
+    <input type="text" placeholder="Give me a password..." id="hello"/>
+    <button onclick="trouverMotDePasse()">Submit</button>
+    <script>
+        // Fonction pour trouver le mot de passe parmi les combinaisons
+        function trouverMotDePasse() {
+
+            const pass = document.getElementById("hello").value;
+            console.log(pass);
+            const tempsDebut = performance.now();
+            let motDePasseTrouve = false;
+
+            for (let i = 0; i <= 9 && !motDePasseTrouve; i++) {
+                for (let j = 0; j <= 9 && !motDePasseTrouve; j++) {
+                    for (let k = 0; k <= 9 && !motDePasseTrouve; k++) {
+                        for (let l = 0; l <= 9 && !motDePasseTrouve; l++) {
+                            for (let m = 0; m <= 9 && !motDePasseTrouve; m++) {
+                                const motDePasse = `${i}${j}${k}${l}${m}`;
+                                if (motDePasse == pass) {
+                                    const tempsFin = performance.now();
+                                    const tempsTotal = tempsFin - tempsDebut;
+                                    console.log(`Mot de passe trouvé : ${motDePasse}`);
+                                    console.log(`Temps nécessaire : ${tempsTotal} ms`);
+                                    motDePasseTrouve = true;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+            if (!motDePasseTrouve) {
+                console.log('Mot de passe non trouvé');
+            }
+        }
+
+        // Appel de la fonction pour trouver le mot de passe
+        //trouverMotDePasse();
+    </script>
+</body>
+</html>

@@ -6,11 +6,11 @@ namespace SecurityAPI.Controllers
 {
     [EnableCors]
     [ApiController]
-    [Route("crypter")]
+    //[Route("crypter")]
     public class TestController : ControllerBase
     {
         [EnableCors]
-        [HttpGet("DecalageCrypt")]
+        [HttpGet("decalage")]
         public Code get(string message, bool gauche)    
         {
             string coded = Algorithms.DecalerCrypter(message, gauche);
@@ -24,11 +24,16 @@ namespace SecurityAPI.Controllers
             return new Code(coded);
         }
 
-        [HttpGet("AffineCrypt")]
+        [HttpGet("affine")]
         public Code getAffine(string message, int a, int b)
         {
-            string coded = Algorithms.AffineCrypt(message, a, b);
-            return new Code(coded);
+            if (Algorithms.ValiderParametres(a, b))
+            {
+                string coded = Algorithms.AffineCrypt(message, a, b);
+                return new Code(coded);
+            }
+
+            return new Code("ERROR");
         }
 
         [HttpGet("AffineDecrypt")]
@@ -38,7 +43,7 @@ namespace SecurityAPI.Controllers
             return new Code(coded);
         }
 
-        [HttpGet("CaesarCrypt")]
+        [HttpGet("caesar")]
         public Code getCaesarCrypt(string message, int shift)
         {
             string coded = Algorithms.CaesarEncrypt(message, shift);
@@ -52,10 +57,10 @@ namespace SecurityAPI.Controllers
             return new Code(coded);
         }
 
-        [HttpGet("Mirroir")]
+        [HttpGet("mirroir")]
         public Code getMirroir(string message) 
         {
-            string coded = Algorithms.Mirroir(message);
+            string coded = Algorithms.MirroirPhrase(message);
             return new Code(coded);
         }
     }
