@@ -15,6 +15,12 @@ function send(message)
     {
         $.get("http://localhost:5003/mirroir", {message: message}, function(data) {
             $("#chiffre").html(data.code);
+            if(data.code != "ERROR")
+            {
+                $.get("http://localhost:5003/mirroir", {message: data.code}, function(data) {
+                    $(".message-clair2").val(data.code);
+                })
+            }
         })
     }
     else if(type == "Caesar")
@@ -23,6 +29,13 @@ function send(message)
         console.log(key);
         $.get("http://localhost:5003/caesar", {message: message, shift: key}, function(data) {
             $("#chiffre").html(data.code);
+            if(data.code != "ERROR")
+            {
+                $.get("http://localhost:5003/CaesarDecrypt", {message: data.code, shift: key}, function(data) {
+                    $(".message-clair2").val(data.code);
+                })
+                // $(".message-clair2").val(data.code);
+            }
         })
     }
     else if(type == "Affine")
@@ -32,6 +45,12 @@ function send(message)
         console.log(a, b);
         $.get("http://localhost:5003/affine", {message: message, a: a, b: b}, function(data) {
             $("#chiffre").html(data.code);
+            if(data.code != "ERROR")
+            {
+                $.get("http://localhost:5003/AffineDecrypt", {message: data.code, a: a, b: b}, function(data) {
+                    $(".message-clair2").val(data.code);
+                })
+            }
         })
     }
     else if(type == "Decalage")
@@ -40,6 +59,13 @@ function send(message)
         console.log(key);
         $.get("http://localhost:5003/decalage", {message: message, gauche: key}, function(data) {
             $("#chiffre").html(data.code);
+            if(data.code != "ERROR")
+            {
+                $.get("http://localhost:5003/decalage", {message: data.code, gauche: !key}, function(data) {
+                    $(".message-clair2").val(data.code);
+                })
+                // $(".message-clair2").val(data.code);
+            }
         })
     }
 }
@@ -50,6 +76,13 @@ function send2(message)
     {
         $.get("http://localhost:5003/mirroir", {message: message}, function(data) {
             $("#chiffre").html(data.code);
+            if(data.code != "ERROR")
+            {
+                $.get("http://localhost:5003/mirroir", {message: data.code}, function(data) {
+                    $(".message-clair").val(data.code);
+                })
+                // $(".message-clair").val(data.code);
+            }
         })
     }
     else if(type == "Caesar2")
@@ -58,6 +91,11 @@ function send2(message)
         console.log(key);
         $.get("http://localhost:5003/caesar", {message: message, shift: key}, function(data) {
             $("#chiffre").html(data.code);
+            if(data.code != "ERROR")
+            {
+                $.get("http://localhost:5003/CaesarDecrypt", {message: data.code, shift: key}, function(data) {
+                $(".message-clair").val(data.code);})
+            }
         })
     }
     else if(type == "Affine2")
@@ -67,6 +105,11 @@ function send2(message)
         console.log(a, b);
         $.get("http://localhost:5003/affine", {message: message, a: a, b: b}, function(data) {
             $("#chiffre").html(data.code);
+            if(data.code != "ERROR")
+            {
+                $.get("http://localhost:5003/AffineDecrypt", {message: data.code, a: a, b: b}, function(data) {
+                $(".message-clair").val(data.code);})
+            }
         })
     }
     else if(type == "Decalage2")
@@ -75,6 +118,11 @@ function send2(message)
         console.log(key);
         $.get("http://localhost:5003/decalage", {message: message, gauche: key}, function(data) {
             $("#chiffre").html(data.code);
+            if(data.code != "ERROR")
+            {
+                $.get("http://localhost:5003/decalage", {message: data.code, gauche: !key}, function(data) {
+                $(".message-clair").val(data.code);})
+            }
         })
     }
 }

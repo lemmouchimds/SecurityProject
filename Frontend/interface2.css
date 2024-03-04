@@ -1,0 +1,141 @@
+body {
+    margin: 0;
+    overflow: hidden;
+    background-image: url('wallpaper.jpg');
+    background-size: cover;
+    background-position: center;
+}
+.App {
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    justify-content: center;
+    height: 90vh;
+    width: 60%;
+    margin: 0 auto;
+    text-align: center;
+    background-color: rgba(255, 255, 255, 0.3);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.8);
+    padding: 50px;
+}
+
+.input-group {
+    display: flex;
+    /* align-items: center; */
+    /* justify-content: center; */
+    margin-bottom: 10px;
+}
+
+button {
+    padding: 15px 30px;
+    border: none;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+}
+
+input[type="text"]:focus,
+input[type="number"]:focus,
+button:hover {
+    transform: scale(1.05);
+}
+
+button {
+    background-color: #007bff;
+    color: #fff;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #0056b3;
+}
+
+div {
+    margin-top: 20px;
+    padding: 20px;
+    background-color: transparent;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+}
+
+div:hover {
+    transform: translateY(-5px);
+}
+
+h1 {
+    color: white;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+    font-size: 36px;
+    transition: text-shadow 0.5s ease;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+label {
+    color: white;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+    font-size: 16px;
+    transition: text-shadow 0.5s ease;
+    margin-right: 10px;
+}
+
+h1:hover {
+    text-shadow: 4px 4px 6px rgba(0, 0, 0, 0.8);
+}
+
+#messageCrypte {
+    border: 1px dashed red;
+}
+.container {
+    margin-bottom: 20px;
+}
+
+.parties-container {
+    display: flex;
+    justify-content: space-between;
+}
+
+.partie1,.partie2, .message-container {
+    width: 28%;
+}
+
+.message-container {
+    border: 1px solid #ccc;
+    padding: 10px;
+    margin-top: 20px;
+    text-align: center;
+    background-color: rgba(255, 255, 255, 0.6);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1), 0 1px 3px rgba(46, 41, 41, 0.08);
+}
+
+.partie1  , .partie2{
+    padding: 30px;
+    background-color: rgba(255, 255, 255, 0.6);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1), 0 1px 3px rgba(46, 41, 41, 0.08);
+}
+
+.synch-button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.parties-container3 {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    margin-top: 50px;
+}
+
+.partie3 {
+    background-color: rgba(255, 255, 255, 0.6);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 50%; /* Increase the width to make it bigger */
+}
+
+.partie3 input {
+    margin-bottom: 20px;
+}
+

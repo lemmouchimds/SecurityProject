@@ -24,12 +24,19 @@ namespace SecurityAPI.Controllers
             return new Code(coded);
         }
 
+        [HttpGet("decalageSolutionDecrypt")]
+        public Code getDecalageSolutionDecrypt(string text, int cle)
+        {
+            string coded = Algorithms.DecalageSolutionDecrypt(text, cle);
+            return new Code(coded);
+        }
+
         [HttpGet("affine")]
         public Code getAffine(string message, int a, int b)
         {
             if (Algorithms.ValiderParametres(a, b))
             {
-                string coded = Algorithms.AffineCrypt(message, a, b);
+                string coded = Algorithms.AffineSolutionCrypt(message, a, b);
                 return new Code(coded);
             }
 
@@ -39,7 +46,7 @@ namespace SecurityAPI.Controllers
         [HttpGet("AffineDecrypt")]
         public Code getAffineDecrypt(string message, int a, int b)
         {
-            string coded = Algorithms.AffineDecrypt(message, a, b);
+            string coded = Algorithms.AffineSolutionDecrypt(message, a, b);
             return new Code(coded);
         }
 

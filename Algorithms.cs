@@ -254,7 +254,7 @@ namespace SecurityAPI
         }
 
         // Fonction de déchiffrement affine
-        public static string AffineSolutionDecrypt(string message, int a, int b, int originalLength)
+        public static string AffineSolutionDecrypt(string message, int a, int b)
         {
             System.Text.StringBuilder decryptedMessage = new System.Text.StringBuilder();
 
@@ -287,7 +287,7 @@ namespace SecurityAPI
             }
 
             // Retirer les caractères supplémentaires du message déchiffré
-            return decryptedMessage.ToString().Substring(0, originalLength);
+            return decryptedMessage.ToString();
         }
 
         //public char[] CipherCode(int number)

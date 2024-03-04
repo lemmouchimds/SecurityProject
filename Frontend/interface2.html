@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="stylesheet" href="interface2.css">
+    <title>Recherche de mot de passe</title>
+</head>
+<body>
+    <a href="interface0.html" style="float: right; color: aliceblue">Home</a>
+    <h1>Interface de recherche de mot de passe</h1>
+    <div class="parties-container3">
+        <div class="partie3"> 
+            <label style="font-size: 20px;">Entrez un mot de passe</label>
+            <input type="text" placeholder="Give me a password..." id="passwordInput" style="font-size: 18px; width: 300px; height: 40px;">
+            <select id="searchMethod">
+                <option value="brute-force">Force brute</option>
+                <option value="dictionary">Dictionnaire</option>
+            </select>
+            <button onclick="trouverMotDePasse()">Submit</button>
+            <div id="resultat"></div>
+        </div>
+    </div>
+
+    <script>
+
+        function trouverMotDePasse() {
+            const searchMethod = document.getElementById("searchMethod").value;
+            if (searchMethod === "brute-force") {
+                trouverMotDePasseFB();
+            } else if (searchMethod === "dictionary") {
+                trouverMotDePasseD();
+            }
+        }
+
+        function trouverMotDePasseFB() {
+            const pass = document.getElementById("passwordInput").value;
+
+            if (/^[01]{3}$/.test(pass)) {
+                trouverMotDePasse1(pass);
+            } else if (/^[0-9]{5}$/.test(pass)) {
+                trouverMotDePasse2(pass);
+            } else if (/^[a-zA-Z0-9+*!@#$%^&()_-]{5}$/.test(pass)) {
+                trouverMotDePasse3(pass);
+            } else {
+                document.getElementById("resultat").innerHTML = "Le mot de passe est incorrect. Veuillez le changer.";
+            }
+        }
+
+        function trouverMotDePasse1(pass) {
+            const tempsDebut = performance.now();
+            let motDePasseTrouve = false;
+        
+            for (let i = 0; i <= 1 && !motDePasseTrouve; i++) {
+                for (let j = 0; j <= 1 && !motDePasseTrouve; j++) {
+                    for (let k = 0; k <= 1 && !motDePasseTrouve; k++) {
+                        const motDePasse = `${i}${j}${k}`;
+                        if (motDePasse === pass) {
+                            const tempsFin = performance.now();
+                            const tempsTotal = tempsFin - tempsDebut;
+                            document.getElementById("resultat").innerHTML = `Mot de passe trouvé (Force Brute) : ${motDePasse}<br>Temps nécessaire : ${tempsTotal} ms`;
+                            motDePasseTrouve = true;
+                        }
+                    }
+                }
+            }
+        
+            if (!motDePasseTrouve) {
+                console.log('Mot de passe non trouvé');
+            }
+        }
+        
+        function trouverMotDePasse2(pass) {
+            const tempsDebut = performance.now();
+            let motDePasseTrouve = false;
+
+            for (let i = 0; i <= 9 && !motDePasseTrouve; i++) {
+                for (let j = 0; j <= 9 && !motDePasseTrouve; j++) {
+                    for (let k = 0; k <= 9 && !motDePasseTrouve; k++) {
+                        for (let l = 0; l <= 9 && !motDePasseTrouve; l++) {
+                            for (let m = 0; m <= 9 && !motDePasseTrouve; m++) {
+                                const motDePasse = `${i}${j}${k}${l}${m}`;
+                                if (motDePasse === pass) {
+                                    const tempsFin = performance.now();
+                                    const tempsTotal = tempsFin - tempsDebut;
+                                    document.getElementById("resultat").innerHTML = `Mot de passe trouvé (Force Brute): ${motDePasse}<br>Temps nécessaire : ${tempsTotal} ms`;
+                                    motDePasseTrouve = true;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+            if (!motDePasseTrouve) {
+                console.log('Mot de passe non trouvé');
+            }
+        }
+
+        function trouverMotDePasse3(pass) {
+            const tempsDebut = performance.now();
+            let motDePasseTrouve = false;
+        
+            const caracteresPossibles = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789+*!@#$%^&()_-";
+        
+            for (let i = 0; i < caracteresPossibles.length && !motDePasseTrouve; i++) {
+                for (let j = 0; j < caracteresPossibles.length && !motDePasseTrouve; j++) {
+                    for (let k = 0; k < caracteresPossibles.length && !motDePasseTrouve; k++) {
+                        for (let l = 0; l < caracteresPossibles.length && !motDePasseTrouve; l++) {
+                            for (let m = 0; m < caracteresPossibles.length && !motDePasseTrouve; m++) {
+                                const motDePasse = `${caracteresPossibles[i]}${caracteresPossibles[j]}${caracteresPossibles[k]}${caracteresPossibles[l]}${caracteresPossibles[m]}`;
+                                if (motDePasse === pass) {
+                                    const tempsFin = performance.now();
+                                    const tempsTotal = tempsFin - tempsDebut;
+                                    document.getElementById("resultat").innerHTML = `Mot de passe trouvé (Force Brute) : ${motDePasse}<br>Temps nécessaire : ${tempsTotal} ms`;
+                                    motDePasseTrouve = true;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        
+            if (!motDePasseTrouve) {
+                console.log('Mot de passe non trouvé');
+            }
+        }
+
+        function trouverMotDePasseD() {
+            const pass = document.getElementById("passwordInput").value;
+
+            if (/^[01]{3}$/.test(pass)) {
+                trouverMotDePasseD1(pass);
+            } else if (/^[0-9]{5}$/.test(pass)) {
+                trouverMotDePasseD2(pass);
+            } else if (/^[a-zA-Z0-9+*!@#$%^&()_-]{5}$/.test(pass)) {
+                trouverMotDePasseD3(pass);
+            } else {
+                document.getElementById("resultat").innerHTML = "Le mot de passe est incorrect. Veuillez le changer.";
+            }
+        }
+
+        function trouverMotDePasseD1(pass){
+            const dictionnaire = ["000", "001", "010", "011", "100", "101", "110", "111"];
+                
+                const tempsDebut = performance.now();
+                let motDePasseTrouve = false;
+            
+                for (let i = 0; i < dictionnaire.length && !motDePasseTrouve; i++) {
+                    const motDePasse = dictionnaire[i];
+                    if (motDePasse === pass) {
+                        const tempsFin = performance.now();
+                        const tempsTotal = tempsFin - tempsDebut;
+                        document.getElementById("resultat").innerHTML = `Mot de passe trouvé avec Dictionnaire : ${motDePasse}<br>Temps nécessaire : ${tempsTotal} ms`;
+                        motDePasseTrouve = true;
+                    }
+                }
+            
+                if (!motDePasseTrouve) {
+                    console.log('Mot de passe non trouvé dans le dictionnaire');
+                }
+           }
+
+function trouverMotDePasseD2(pass) {
+    const dictionnaire = [];
+for (let i = 0; i <= 9; i++) {
+    for (let j = 0; j <= 9; j++) {
+        for (let k = 0; k <= 9; k++) {
+            for (let l = 0; l <= 9; l++) {
+                for (let m = 0; m <= 9; m++) {
+                    dictionnaire[dictionnaire.length] = `${i}${j}${k}${l}${m}`;
+                }
+            }
+        }
+    }
+}
+
+    const tempsDebut = performance.now();
+    let motDePasseTrouve = false;
+
+    for (let i = 0; i < dictionnaire.length && !motDePasseTrouve; i++) {
+        const motDePasse = dictionnaire[i];
+        if (motDePasse === pass) {
+            const tempsFin = performance.now();
+            const tempsTotal = tempsFin - tempsDebut;
+            document.getElementById("resultat").innerHTML = `Mot de passe trouvé avec Dictionnaire : ${motDePasse}<br>Temps nécessaire : ${tempsTotal} ms`;
+            motDePasseTrouve = true;
+        }
+    }
+
+    if (!motDePasseTrouve) {
+        console.log('Mot de passe non trouvé dans le dictionnaire');
+    }
+}
+
+function trouverMotDePasseD3(pass){
+    const caracteresPossibles = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789+*!@#$%^&()_-";
+    const dictionnaire = [];
+    
+    for (let i = 0; i < caracteresPossibles.length; i++) {
+        for (let j = 0; j < caracteresPossibles.length; j++) {
+            for (let k = 0; k < caracteresPossibles.length; k++) {
+                for (let l = 0; l < caracteresPossibles.length; l++) {
+                    for (let m = 0; m < caracteresPossibles.length; m++) {
+                        const motDePasse = `${caracteresPossibles[i]}${caracteresPossibles[j]}${caracteresPossibles[k]}${caracteresPossibles[l]}${caracteresPossibles[m]}`;
+                        dictionnaire.push(motDePasse);
+                    }
+                }
+            }
+        }
+    }
+    
+        const tempsDebut = performance.now();
+        let motDePasseTrouve = false;
+    
+        for (let i = 0; i < dictionnaire.length && !motDePasseTrouve; i++) {
+            const motDePasse = dictionnaire[i];
+            if (motDePasse === pass) {
+                const tempsFin = performance.now();
+                const tempsTotal = tempsFin - tempsDebut;
+                document.getElementById("resultat").innerHTML = `Mot de passe trouvé avec Dictionnaire : ${motDePasse}<br>Temps nécessaire : ${tempsTotal} ms`;
+                motDePasseTrouve = true;
+            }
+        }
+    
+        if (!motDePasseTrouve) {
+            console.log('Mot de passe non trouvé dans le dictionnaire');
+        }
+}
+    </script>
+</body>
+</html>
