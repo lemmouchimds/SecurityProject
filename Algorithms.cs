@@ -1,4 +1,4 @@
-﻿using System.Text;
+using System.Text;
 
 namespace SecurityAPI
 {
@@ -153,7 +153,7 @@ namespace SecurityAPI
 
         public static bool ValiderParametres(int a, int b)
         {
-            // Vérifier que a est différent de 1 et b est different de 0 because x*1+0=maderna walo
+            // Vérifier que a est différent de 1 et b est different de 0
             if (a == 1 && b == 0)
             {
                 Console.WriteLine("Attention : lorsque 'a' vaut 1 et 'b' vaut 0, le chiffrement affine ne produit aucun chiffrement réel.");
