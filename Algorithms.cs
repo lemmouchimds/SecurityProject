@@ -236,7 +236,7 @@ namespace SecurityAPI
         }
 
         static readonly int ASCII_SIZE = 256; // Taille de l'alphabet ASCII étendu
-
+    
         // Fonction de chiffrement affine
         public static string AffineSolutionCrypt(string message, int a, int b)
         {

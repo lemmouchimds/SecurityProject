@@ -32,17 +32,33 @@
     <script>
         window.onload = function () {
             var loginForm = $("#login-form");
+            var failedAttempts = 0;
+            var blockTime = 30000; // 30 seconds in milliseconds
             loginForm.addClass("animation-enter");
 
             $("#loginForm").on("submit", function (event) {
                 event.preventDefault();
+                if (failedAttempts >= 3) {
+                    alert("Too many failed attempts. Please wait for 30 seconds.");
+                    return;
+                }
                 var username = $("input[name='uname']").val();
                 var password = $("input[name='pass']").val();
                 if (username === "admin" && password === "root") {
                     window.location.href = "interface0.html";
                 }
                 else {
-                    alert("Invalid username or password");
+                    failedAttempts++;
+                    if (failedAttempts >= 3) {
+                        alert("Too many failed attempts. You are blocked for 30 seconds.");
+                        loginForm.find(':input').prop('disabled', true);
+                        setTimeout(function() {
+                            loginForm.find(':input').prop('disabled', false);
+                            failedAttempts = 0;
+                        }, blockTime);
+                    } else {
+                        alert("Invalid username or password");
+                    }
                 }
             });
         };

@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Stéganographie : Cacher une image dans une autre image</title>
+    <style>
+        .image-container {
+            display: flex;
+            justify-content: space-around;
+            margin-top: 20px;
+        }
+        .image-container img, canvas {
+            max-width: 300px;
+            height: auto;
+        }
+        .bit-container {
+            margin-top: 10px;
+            font-family: monospace;
+        }
+    </style>
+</head>
+<body>
+
+<h2>Stéganographie : Cacher une image dans une autre image</h2>
+
+<label for="coverImageInput">Image de couverture :</label>
+<input type="file" id="coverImageInput" accept="image/*"/>
+<br>
+<label for="hiddenImageInput">Image à cacher :</label>
+<input type="file" id="hiddenImageInput" accept="image/*"/>
+<br>
+<label for="maskInput">Masque (format binaire) :</label>
+<input type="text" id="maskInput" placeholder="Entrez le masque binaire"/>
+<br>
+<button onclick="hideImage()">Cacher l'image</button>
+<button onclick="extractImage()">Extraire l'image cachée</button>
+<div class="image-container">
+    <div>
+        <h3>Image de couverture</h3>
+        <img id="coverImage" alt="Image de couverture"/>
+        <div id="coverImageBits" class="bit-container"></div>
+    </div>
+    <div>
+        <h3>Image à cacher</h3>
+        <img id="hiddenImage" alt="Image à cacher"/>
+        <div id="hiddenImageBits" class="bit-container"></div>
+    </div>
+</div>
+<div class="image-container">
+    <div>
+        <h3>Image composite</h3>
+        <img id="outputImage" alt="Image composite"/>
+        <div id="outputImageBits" class="bit-container"></div>
+    </div>
+    <div>
+        <h3>Image extraite</h3>
+        <canvas id="extractedImageCanvas"></canvas>
+        <div id="extractedImageBits" class="bit-container"></div>
+    </div>
+</div>
+
+<script>
+    var hexa; // Déclarer hexa en dehors de la fonction
+    var shiftAmount; // Déclarer shiftAmount en dehors de la fonction
+
+    function convertToHex(mask) {
+        // Convertir le masque binaire en décimal
+        var decimalMask = parseInt(mask, 2);
+        // Convertir le décimal en hexadécimal
+        hexa = decimalMask; // Stocker la valeur hexadécimale dans la variable hexa
+        return '0x' + decimalMask.toString(16);
+    }
+    
+    function hideImage() {
+        var coverInput = document.getElementById('coverImageInput');
+        var hiddenInput = document.getElementById('hiddenImageInput');
+        var maskInput = document.getElementById('maskInput');
+        console.log('mask : ',maskInput.value);
+
+        var coverFile = coverInput.files[0];
+        var hiddenFile = hiddenInput.files[0];
+        var mask = maskInput.value;
+        hexa= convertToHex(mask);
+        console.log('hexa : ',hexa);
+        // Calculer le nombre de zéros dans le masque
+        var numZeros = mask.split('0').length - 1;
+
+        // Calculer le décalage en fonction du nombre de zéros
+        shiftAmount = 8 - numZeros;
+
+        var reader1 = new FileReader();
+        var reader2 = new FileReader();
+
+        reader1.onload = function (e1) {
+            var coverImage = new Image();
+            coverImage.src = e1.target.result;
+            coverImage.onload = function () {
+                var canvas = document.createElement('canvas');
+                canvas.width = coverImage.width;
+                canvas.height = coverImage.height;
+                var ctx = canvas.getContext('2d');
+                ctx.drawImage(coverImage, 0, 0);
+
+                reader2.onload = function (e2) {
+                    var hiddenImage = new Image();
+                    hiddenImage.src = e2.target.result;
+                    hiddenImage.onload = function () {
+                        var hiddenCanvas = document.createElement('canvas');
+                        hiddenCanvas.width = coverImage.width;
+                        hiddenCanvas.height = coverImage.height;
+                        var hiddenCtx = hiddenCanvas.getContext('2d');
+                        hiddenCtx.drawImage(hiddenImage, 0, 0, coverImage.width, coverImage.height);
+
+                        // Cacher l'image dans l'image de couverture en modifiant les bits moins significatifs
+                        var coverImageData = ctx.getImageData(0, 0, coverImage.width, coverImage.height);
+                        var hiddenImageData = hiddenCtx.getImageData(0, 0, coverImage.width, coverImage.height);
+
+                        // Afficher les bits de chaque image
+                        document.getElementById('coverImageBits').innerText = getImageBits(coverImageData);
+                        document.getElementById('hiddenImageBits').innerText = getImageBits(hiddenImageData);
+
+                        for (var i = 0; i < coverImageData.data.length; i += 4) {
+                            // Répartir les bits de l'image cachée sur les bits moins significatifs de l'image de couverture
+                            coverImageData.data[i] = (coverImageData.data[i] & parseInt(mask, 2)) | ((hiddenImageData.data[i] >> shiftAmount) & (0xFF >> (8 - shiftAmount)));
+                            coverImageData.data[i + 1] = (coverImageData.data[i + 1] & parseInt(mask, 2)) | ((hiddenImageData.data[i + 1] >> shiftAmount) & (0xFF >> (8 - shiftAmount)));
+                            coverImageData.data[i + 2] = (coverImageData.data[i + 2] & parseInt(mask, 2)) | ((hiddenImageData.data[i + 2] >> shiftAmount) & (0xFF >> (8 - shiftAmount)));
+                        }
+
+                        ctx.putImageData(coverImageData, 0, 0);
+
+                        var outputImage = document.getElementById('outputImage');
+                        outputImage.src = canvas.toDataURL();
+                        outputImage.style.display = "inline";
+                        document.getElementById('coverImage').src = coverImage.src;
+                        document.getElementById('hiddenImage').src = hiddenImage.src;
+
+                        // Afficher les bits de l'image composite
+                        document.getElementById('outputImageBits').innerText = getImageBits(coverImageData);
+                    };
+                };
+
+                reader2.readAsDataURL(hiddenFile);
+            };
+        };
+
+        reader1.readAsDataURL(coverFile);
+    }
+
+    function extractImage() {
+        var outputImage = document.getElementById('outputImage');
+        var canvas = document.createElement('canvas');
+        var ctx = canvas.getContext('2d');
+    
+        canvas.width = outputImage.width;
+        canvas.height = outputImage.height;
+        ctx.drawImage(outputImage, 0, 0);
+    
+        var extractedCanvas = document.getElementById('extractedImageCanvas');
+        extractedCanvas.width = canvas.width;
+        extractedCanvas.height = canvas.height;
+        var extractedCtx = extractedCanvas.getContext('2d');
+        var extractedImageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+    
+        for (var i = 0; i < extractedImageData.data.length; i += 4) {
+            // Extraire les bits cachés des bits moins significatifs de l'image de couverture
+            extractedImageData.data[i] = (extractedImageData.data[i] & 0x03) << 6; // Décalage de 6 bits vers la gauche
+            extractedImageData.data[i + 1] = (extractedImageData.data[i + 1] & 0x03) << 6; // Décalage de 6 bits vers la gauche
+            extractedImageData.data[i + 2] = (extractedImageData.data[i + 2] & 0x03) << 6; // Décalage de 6 bits vers la gauche
+            extractedImageData.data[i + 3] = 255; // Opacité maximale
+        }
+    
+        extractedCtx.putImageData(extractedImageData, 0, 0);
+    
+        // Afficher les bits de l'image extraite
+        document.getElementById('extractedImageBits').innerText = getImageBits(extractedImageData);
+    }
+    
+
+    function getImageBits(imageData) {
+        var bits = '';
+        for (var i = 0; i < imageData.data.length; i += 4) {
+            var r = imageData.data[i].toString(2).padStart(8, '0');
+            var g = imageData.data[i + 1].toString(2).padStart(8, '0');
+            var b = imageData.data[i + 2].toString(2).padStart(8, '0');
+            bits += `Pixel ${i / 4 + 1}: R${r} G${g} B${b}\n`;
+        }
+        return bits;
+    }
+</script>
+
+</body>
+</html>
